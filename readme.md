@@ -1,4 +1,4 @@
-This is a mashup of the D3 *Spline* and *Zoom + Pan* examples along with [Ricardo's example of X axis re-scaling by dragging](http://bl.ocks.org/1179647). 
+This is a mashup of the D3 **Spline** and **Zoom + Pan** examples along with [Ricardo's example of X-axis re-scaling by dragging](http://bl.ocks.org/1179647). 
 
 There are still some problems however ...
 
