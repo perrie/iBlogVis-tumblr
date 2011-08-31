@@ -66,22 +66,25 @@ var size = [600, 400],
     line = d3.svg.line()
         .x(function(d, i) { return x(points[i].x); })
         .y(function(d, i) { return y(points[i].y); }),
+    // drag x-axis logic
+    downscaley = y.copy(),
+    downy = Math.NaN,
     dragged = null,
     selected = points[0];
 
 var vis = d3.select("#chart").append("svg:svg")
     .attr("width", size[0] + padding[3] + padding[1])
     .attr("height", size[1] + padding[0] + padding[2])
-    .attr("pointer-events", "all")
     .append("svg:g")
-      .attr("transform", "translate(" + padding[3] + "," + padding[0] + ")")
-      .call(d3.behavior.zoom().on("zoom", redraw));
+      .attr("transform", "translate(" + padding[3] + "," + padding[0] + ")");
 
-vis.append("svg:rect")
+var graph = vis.append("svg:rect")
     .attr("width", size[0])
     .attr("height", size[1])
     .attr("stroke", "none")
-    .style("fill", "#fff");
+    .style("fill", "#fff")
+    .attr("pointer-events", "all")
+    .call(d3.behavior.zoom().on("zoom", redraw));
     // .on("mousedown", function() {
     //   points.push(selected = dragged = d3.svg.mouse(vis.node()));
     //   update();
@@ -121,7 +124,7 @@ d3.select("#interpolate")
 
 function update() {
   var lines = vis.select("path").attr("d", line(points));
-        
+
   var circle = vis.selectAll("circle")
       .data(points, function(d) { return d; });
 
@@ -208,17 +211,17 @@ function redraw() {
       .attr("y1", 0)
       .attr("y2", size[1]);
 
-  gxe.append("svg:text")
-      .attr("y", size[1])
-      .attr("dy", "1em")
-      .attr("text-anchor", "middle")
-      .text(fx)
-      .on("mousedown", function(d) {
-        var p = d3.svg.mouse(vis[0][0]);
-        downx = x.invert(p[0]);
-        downscalex = x.copy();
-      });
-      
+   gxe.append("svg:text")
+       .attr("y", size[1])
+       .attr("dy", "1em")
+       .attr("text-anchor", "middle")
+       .text(fx)
+       .on("mousedown", function(d) {
+            var p = d3.svg.mouse(vis[0][0]);
+            downx = x.invert(p[0]);
+            downscalex = x.copy();
+       });
+
 
   gx.exit().remove();
 
@@ -243,7 +246,12 @@ function redraw() {
       .attr("x", -3)
       .attr("dy", ".35em")
       .attr("text-anchor", "end")
-      .text(fy);
+      .text(fy)
+      .on("mousedown", function(d) {
+           var p = d3.svg.mouse(vis[0][0]);
+           downy = y.invert(p[1]);
+           downscaley = y.copy();
+      });
 
   gy.exit().remove();
   update();
@@ -270,16 +278,38 @@ d3.select('body')
       }
       d3.event.preventDefault();
       d3.event.stopPropagation();
+    };
+    if (!isNaN(downy)) {
+      var p = d3.svg.mouse(vis[0][0]), 
+        rupy = downscaley.invert(p[1]),
+        yaxis1 = downscaley.domain()[1],
+        yaxis2 = downscaley.domain()[0],
+        yextent = yaxis2 - yaxis1;
+      if (rupy != 0) {
+          var changey, new_domain;
+          changey = downy / rupy;
+          new_domain = [yextent * changey, yaxis1];
+          y.domain(new_domain);
+          redraw();
+      }
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
     }
   })
   .on("mouseup", function(d) {
       if (!isNaN(downx)) {
+          redraw();
           downx = Math.NaN;
           d3.event.preventDefault();
           d3.event.stopPropagation();
       };
+      if (!isNaN(downy)) {
+          redraw();
+          downy = Math.NaN;
+          d3.event.preventDefault();
+          d3.event.stopPropagation();
+      };
   });
-
     </script>
 
   </body>
