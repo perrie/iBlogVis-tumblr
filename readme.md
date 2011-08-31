@@ -7,5 +7,7 @@
 * click on a data point to select it
 * drag a selected data point to change it's value
 * enter the delete or backspace key to delete a selected data point
+* drag a selected data point to change it's value
+* hold the Shift key down and click an empty area of the graph to add a data point
 
 *source: [gist.github.com/1182434](https://gist.github.com/1182434)*
