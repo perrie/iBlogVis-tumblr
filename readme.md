@@ -3,6 +3,6 @@ This is a mashup of the D3 **Spline** and **Zoom + Pan** examples along with [Ri
 * Drag on the canvas to translate/pan the graph.
 * double-click on the canvas to zoom in
 * shift-double-click on the canvas to zoom out
-* Drag on the X or Y axis labels to re-scsale that axis
+* Drag on the X or Y axis labels to re-scale that axis
 * click on a data point to select it
 * enter the delete or backspace key to delete a selected data point
