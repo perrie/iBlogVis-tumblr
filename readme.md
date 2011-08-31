@@ -16,7 +16,7 @@ There's still a bug where if you scale an axis once, you can then translate/pan 
 
 ### D3 References:
 
-* [repo](https://github.com/mbostock/d3)
+* [repository](https://github.com/mbostock/d3)
 * [wiki](http://mbostock.github.com/d3/)
 * [examples](http://mbostock.github.com/d3/ex/)
 * [API](https://github.com/mbostock/d3/wiki/API-Reference)
@@ -30,7 +30,7 @@ There's still a bug where if you scale an axis once, you can then translate/pan 
 
 ### External D3 Tutorials
 
- * [Try D3 Now](http://christopheviau.com/d3_tutorial/)
+* [Try D3 Now](http://christopheviau.com/d3_tutorial/)
 * [Array Basics](http://www.janwillemtulp.com/2011/03/31/tutorialthe-basics-working-with-arrays-in-d3/)
 * [Line Interpolations](http://www.janwillemtulp.com/2011/03/23/tutorial-line-interpolations-in-d3/)
 * [Line Chart](http://www.janwillemtulp.com/2011/04/01/tutorial-line-chart-in-d3/)
