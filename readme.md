@@ -5,6 +5,7 @@
 * shift-double-click on the canvas to zoom out
 * Drag on the X or Y axis labels to re-scale that axis
 * click on a data point to select it
+* drag a selected data point to change it's value
 * enter the delete or backspace key to delete a selected data point
 
 *source: [gist.github.com/1182434](https://gist.github.com/1182434)*

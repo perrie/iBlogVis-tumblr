@@ -89,7 +89,7 @@ var graph = vis.append("svg:rect")
     .attr("width", size[0])
     .attr("height", size[1])
     // .attr("stroke", "none")
-    .style("fill", "#F4F4F4")
+    .style("fill", "#EEEEEE")
     .attr("pointer-events", "all")
     .call(d3.behavior.zoom().on("zoom", redraw));
     // .on("mousedown", function() {
@@ -102,8 +102,8 @@ vis.append("svg:path")
     .attr("d", line(points));
 
 d3.select(window)
-    // .on("mousemove", mousemove)
-    // .on("mouseup", mouseup)
+    .on("mousemove", mousemove)
+    .on("mouseup", mouseup)
     .on("keydown", keydown);
 
 // Add interpolator dropdown
@@ -137,8 +137,8 @@ function update() {
 
   circle.enter().append("svg:circle")
       .attr("class", function(d) { return d === selected ? "selected" : null; })
-      .attr("cx", function(d) { return x(d.x); })
-      .attr("cy", function(d) { return y(d.y); })
+      .attr("cx",    function(d) { return x(d.x); })
+      .attr("cy",    function(d) { return y(d.y); })
       .attr("r", 4.0)
       .on("mousedown", function(d) {
         selected = dragged = d;
@@ -151,8 +151,8 @@ function update() {
 
   circle
       .attr("class", function(d) { return d === selected ? "selected" : null; })
-      .attr("cx", function(d) { return x(d.x); })
-      .attr("cy", function(d) { return y(d.y); });
+      .attr("cx",    function(d) { return x(d.x); })
+      .attr("cy",    function(d) { return y(d.y); });
 
   circle.exit().remove();
 
@@ -163,19 +163,19 @@ function update() {
 }
 
 
-// function mousemove() {
-//   if (!dragged) return;
-//   var m = d3.svg.mouse(vis.node());
-//   dragged[0] = Math.max(0, Math.min(w, m[0]));
-//   dragged[1] = Math.max(0, Math.min(h, m[1]));
-//   update();
-// }
-// 
-// function mouseup() {
-//   if (!dragged) return;
-//   mousemove();
-//   dragged = null;
-// }
+function mousemove() {
+  if (!dragged) return;
+  var m = d3.svg.mouse(vis.node());
+  dragged.x = x.invert(Math.max(0, Math.min(size[0], m[0])));
+  dragged.y = y.invert(Math.max(0, Math.min(size[1], m[1])));
+  update();
+}
+
+function mouseup() {
+  if (!dragged) return;
+  mousemove();
+  dragged = null;
+}
 
 function keydown() {
   if (!selected) return;
@@ -329,6 +329,7 @@ d3.select('body')
       // d3.event.preventDefault();
       // d3.event.stopPropagation();
   });
+
 
     </script>
 
