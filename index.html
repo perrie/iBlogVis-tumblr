@@ -124,7 +124,7 @@ d3.select("#interpolate")
 
 function update() {
   var lines = vis.select("path").attr("d", line(points));
-
+        
   var circle = vis.selectAll("circle")
       .data(points, function(d) { return d; });
 
@@ -204,7 +204,8 @@ function redraw() {
 
   var gxe = gx.enter().insert("svg:g", "a")
       .attr("class", "x")
-      .attr("transform", tx);
+      .attr("transform", tx)
+      .attr("background-fill", "#FFEEB6");
 
   gxe.append("svg:line")
       .attr("stroke", stroke)
@@ -220,8 +221,9 @@ function redraw() {
             var p = d3.svg.mouse(vis[0][0]);
             downx = x.invert(p[0]);
             downscalex = x.copy();
+            // d3.behavior.zoom().off("zoom", redraw);
        });
-
+      
 
   gx.exit().remove();
 
@@ -235,7 +237,8 @@ function redraw() {
 
   var gye = gy.enter().insert("svg:g", "a")
       .attr("class", "y")
-      .attr("transform", ty);
+      .attr("transform", ty)
+      .attr("background-fill", "#FFEEB6");
 
   gye.append("svg:line")
       .attr("stroke", stroke)
@@ -251,7 +254,9 @@ function redraw() {
            var p = d3.svg.mouse(vis[0][0]);
            downy = y.invert(p[1]);
            downscaley = y.copy();
+           // d3.behavior.zoom().off("zoom", redraw);
       });
+      
 
   gy.exit().remove();
   update();
@@ -302,14 +307,19 @@ d3.select('body')
           downx = Math.NaN;
           d3.event.preventDefault();
           d3.event.stopPropagation();
+          // graph.call(d3.behavior.zoom().on("zoom", redraw));
       };
       if (!isNaN(downy)) {
           redraw();
           downy = Math.NaN;
           d3.event.preventDefault();
           d3.event.stopPropagation();
+          // graph.call(d3.behavior.zoom().on("zoom", redraw));
       };
+      // d3.event.preventDefault();
+      // d3.event.stopPropagation();
   });
+
     </script>
 
   </body>
