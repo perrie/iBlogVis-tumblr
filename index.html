@@ -187,7 +187,7 @@ function keydown() {
 redraw();
 
 function redraw() {
-  if (d3.event && d3.event.transform && isNaN(downx)) {
+  if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
       d3.event.transform(x, y);
   };
 
