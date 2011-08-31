@@ -38,7 +38,7 @@ circle.selected {
     <select id="interpolate"></select>
     <script type="text/javascript">
 
-var size = [900, 440],
+var size = [600, 400],
     padding = [20, 20, 20, 40], // top right bottom left
     mw = size[0] - padding[1] - padding[3],
     mh = size[1] - padding[0] - padding[2],
@@ -268,16 +268,16 @@ function redraw() {
 
 d3.select('body')
   .on("mousemove", function(d) {
+    var p = d3.svg.mouse(vis[0][0]);
     if (!isNaN(downx)) {
-      var p = d3.svg.mouse(vis[0][0]), 
-        rupx = downscalex.invert(p[0]),
+      var rupx = downscalex.invert(p[0]),
         xaxis1 = downscalex.domain()[0],
         xaxis2 = downscalex.domain()[1],
         xextent = xaxis2 - xaxis1;
       if (rupx != 0) {
           var changex, new_domain;
           changex = downx / rupx;
-          new_domain = [xaxis1, xextent * changex];
+          new_domain = [xaxis1, xaxis1 + (xextent * changex)];
           x.domain(new_domain);
           redraw();
       }
@@ -285,7 +285,6 @@ d3.select('body')
       d3.event.stopPropagation();
     };
     if (!isNaN(downy)) {
-      var p = d3.svg.mouse(vis[0][0]), 
         rupy = downscaley.invert(p[1]),
         yaxis1 = downscaley.domain()[1],
         yaxis2 = downscaley.domain()[0],
@@ -293,7 +292,7 @@ d3.select('body')
       if (rupy != 0) {
           var changey, new_domain;
           changey = downy / rupy;
-          new_domain = [yextent * changey, yaxis1];
+          new_domain = [yaxis1 + (yextent * changey), yaxis1];
           y.domain(new_domain);
           redraw();
       }
