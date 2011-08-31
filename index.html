@@ -13,6 +13,12 @@ rect {
   fill: #fff;
 }
 
+#chart {
+    background-color: #F7F2C5;
+    width: 960px;
+    height: 500px;
+}
+
 circle, .line {
   fill: none;
   stroke: steelblue;
@@ -38,8 +44,8 @@ circle.selected {
     <select id="interpolate"></select>
     <script type="text/javascript">
 
-var size = [900, 450],
-    padding = [20, 20, 20, 40], // top right bottom left
+var size = [890, 450],
+    padding = [20, 30, 20, 40], // top right bottom left
     mw = size[0] - padding[1] - padding[3],
     mh = size[1] - padding[0] - padding[2],
     tx = function(d) { return "translate(" + x(d) + ",0)"; },
@@ -75,14 +81,15 @@ var size = [900, 450],
 var vis = d3.select("#chart").append("svg:svg")
     .attr("width", size[0] + padding[3] + padding[1])
     .attr("height", size[1] + padding[0] + padding[2])
+    // .style("background-fill", "#FFEEB6")
     .append("svg:g")
       .attr("transform", "translate(" + padding[3] + "," + padding[0] + ")");
 
 var graph = vis.append("svg:rect")
     .attr("width", size[0])
     .attr("height", size[1])
-    .attr("stroke", "none")
-    .style("fill", "#fff")
+    // .attr("stroke", "none")
+    .style("fill", "#EEEEEE")
     .attr("pointer-events", "all")
     .call(d3.behavior.zoom().on("zoom", redraw));
     // .on("mousedown", function() {
@@ -204,8 +211,7 @@ function redraw() {
 
   var gxe = gx.enter().insert("svg:g", "a")
       .attr("class", "x")
-      .attr("transform", tx)
-      .attr("background-fill", "#FFEEB6");
+      .attr("transform", tx);
 
   gxe.append("svg:line")
       .attr("stroke", stroke)
@@ -217,9 +223,12 @@ function redraw() {
        .attr("dy", "1em")
        .attr("text-anchor", "middle")
        .text(fx)
+       .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+       .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
        .on("mousedown", function(d) {
             var p = d3.svg.mouse(vis[0][0]);
             downx = x.invert(p[0]);
+            downscalex = null;
             downscalex = x.copy();
             // d3.behavior.zoom().off("zoom", redraw);
        });
@@ -250,6 +259,8 @@ function redraw() {
       .attr("dy", ".35em")
       .attr("text-anchor", "end")
       .text(fy)
+      .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+      .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
       .on("mousedown", function(d) {
            var p = d3.svg.mouse(vis[0][0]);
            downy = y.invert(p[1]);
