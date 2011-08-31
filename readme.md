@@ -1,4 +1,4 @@
-This is a mashup of the [D3](https://github.com/mbostock/d3) **Spline** and **Zoom-Pan** examples along with [Ricardo Marimon's example of X-axis re-scaling by dragging](http://bl.ocks.org/1179647). 
+[This example](http://bl.ocks.org/1182434) is a mashup of the [D3](https://github.com/mbostock/d3) **Spline** and **Zoom-Pan** examples along with [Ricardo Marimon's example of X-axis re-scaling by dragging](http://bl.ocks.org/1179647). 
 
 * Drag on the canvas to translate/pan the graph.
 * double-click on the canvas to zoom in
