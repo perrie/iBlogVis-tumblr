@@ -16,11 +16,11 @@ There's still a bug where if you scale an axis once, you can then translate/pan 
 
 D3 References:
 
-* repo: [https://github.com/mbostock/d3](https://github.com/mbostock/d3)
-* wiki: [http://mbostock.github.com/d3/](http://mbostock.github.com/d3/)
-* examples: [http://mbostock.github.com/d3/ex/](http://mbostock.github.com/d3/ex/)
-* API: [https://github.com/mbostock/d3/wiki/API-Reference](https://github.com/mbostock/d3/wiki/API-Reference)
-* Quantitative Scales: [https://github.com/mbostock/d3/wiki/Quantitative-Scales](https://github.com/mbostock/d3/wiki/Quantitative-Scales)
+* [repo](https://github.com/mbostock/d3)
+* [wiki](http://mbostock.github.com/d3/)
+* [examples](http://mbostock.github.com/d3/ex/)
+* [API](https://github.com/mbostock/d3/wiki/API-Reference)
+* [Quantitative Scales](https://github.com/mbostock/d3/wiki/Quantitative-Scales)
 
 D3 Tutorials:
 
