@@ -102,15 +102,15 @@ var chart = document.getElementById("chart"),
 var vis = d3.select(chart).append("svg")
     .attr("width", cx)
     .attr("height", cy)
-    .append("svg:g")
+    .append("g")
       .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
-var graph = vis.append("svg:rect")
+var graph = vis.append("rect")
     .attr("width", size.width)
     .attr("height", size.height)
     .style("fill", "#EEEEEE")
     .attr("pointer-events", "all")
-    .call(d3.behavior.zoom().x(x).y(y).on("zoom", redraw))
+    // .call(d3.behavior.zoom().x(x).y(y).on("zoom", redraw))
     .on("mousedown", function() {
       if (d3.event.altKey) {
           points.push(selected = dragged = d3.svg.mouse(vis.node()));
@@ -163,7 +163,7 @@ function update() {
   var circle = vis.select("svg").selectAll("circle")
       .data(points, function(d) { return d; });
 
-  circle.enter().append("svg:circle")
+  circle.enter().append("circle")
       .attr("class", function(d) { return d === selected ? "selected" : null; })
       .attr("cx",    function(d) { return x(d.x); })
       .attr("cy",    function(d) { return y(d.y); })
@@ -237,16 +237,16 @@ function redraw() {
   gx.select("text")
       .text(fx);
 
-  var gxe = gx.enter().insert("svg:g", "a")
+  var gxe = gx.enter().insert("g", "a")
       .attr("class", "x")
       .attr("transform", tx);
 
-  gxe.append("svg:line")
+  gxe.append("line")
       .attr("stroke", stroke)
       .attr("y1", 0)
       .attr("y2", size.height);
 
-  gxe.append("svg:text")
+  gxe.append("text")
       .attr("y", size.height)
       .attr("dy", "1em")
       .attr("text-anchor", "middle")
@@ -271,17 +271,17 @@ function redraw() {
   gy.select("text")
       .text(fy);
 
-  var gye = gy.enter().insert("svg:g", "a")
+  var gye = gy.enter().insert("g", "a")
       .attr("class", "y")
       .attr("transform", ty)
       .attr("background-fill", "#FFEEB6");
 
-  gye.append("svg:line")
+  gye.append("line")
       .attr("stroke", stroke)
       .attr("x1", 0)
       .attr("x2", size[0]);
 
-  gye.append("svg:text")
+  gye.append("text")
       .attr("x", -3)
       .attr("dy", ".35em")
       .attr("text-anchor", "end")
