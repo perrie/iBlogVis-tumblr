@@ -128,7 +128,9 @@ vis.append("svg")
     .attr("height", size.height)
     .attr("viewBox", "0 0 "+size.width+" "+size.height)
     .attr("class", "line")
-    .attr("d", line(points));
+    .append("path")
+        .attr("class", "line")
+        .attr("d", line(points))
 
 d3.select(window)
     .on("mousemove", mousemove)
