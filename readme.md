@@ -5,14 +5,11 @@
 * shift-double-click on the canvas to zoom out
 * Drag on one of the X or Y axis numeric labels to re-scale that axis
 * click on a data point to select it
-* drag a selected data point to change it's value
+* drag a selected data point up or down to change it's Y value
 * enter the delete or backspace key to delete a selected data point
-* drag a selected data point to change it's value
 * hold the ALT/Option key down and click an empty area of the graph to add a data point
 
 *source: [gist.github.com/1182434](https://gist.github.com/1182434)*
-
-There's still a bug where if you scale an axis once, you can then translate/pan around but if you scale the same axis a second time when you next try and translate/pan the result of the first axis re-scale will re-appear. This bug also appears if you re-scale the axes and then add a new data point.
 
 ### D3 References:
 
