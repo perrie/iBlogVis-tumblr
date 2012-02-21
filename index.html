@@ -74,19 +74,20 @@ var chart = document.getElementById("chart"),
     tx = function(d) { return "translate(" + x(d) + ",0)"; },
     ty = function(d) { return "translate(0," + y(d) + ")"; },
     stroke = function(d) { return d ? "#ccc" : "#666"; },
-    points = d3.range(1, 10).map(function(i) { 
-        return {x: i * size.width / 5, y:  50 + Math.random() * (size.height - 100)}; 
-    }),
-
+    yrange2 = (graph.ymax - graph.ymin) / 2,
+    points = d3.range(graph.xmin, graph.xmax).map(function(i) { 
+      return { x: i, y: graph.ymin + yrange2 + Math.random() * yrange2 / 2 }; 
+    });
+    
     line = d3.svg.line()
         .x(function(d, i) { return x(points[i].x); })
         .y(function(d, i) { return y(points[i].y); }),
     
     // x-scale
     x = d3.scale.linear()
-        .domain([d3.min(points, function(d) { return d.x; }), d3.max(points, function(d) { return d.x; })])
+        .domain([graph.xmax, graph.xmin])
         .nice()
-        .range([0, size.width])
+        .range([0, size.height])
         .nice(),
     // drag x-axis logic
     downscalex = x.copy(),
@@ -94,7 +95,7 @@ var chart = document.getElementById("chart"),
 
     // y-scale (inverted domain)
     y = d3.scale.linear()
-        .domain([d3.max(points, function(d) { return d.y; }), d3.min(points, function(d) { return d.y; })])
+        .domain([graph.ymax, graph.ymin])
         .nice()
         .range([0, size.height])
         .nice(),
