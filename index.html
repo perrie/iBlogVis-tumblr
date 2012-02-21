@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <title>Spline + Pan</title>
+    <title>D3.js: Zoom, Spline + Pan</title>
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
     <style type="text/css">
 body {
@@ -75,20 +75,16 @@ var chart = document.getElementById("chart"),
     ty = function(d) { return "translate(0," + y(d) + ")"; },
     stroke = function(d) { return d ? "#ccc" : "#666"; },
     yrange2 = (graph.ymax - graph.ymin) / 2,
+    yrange4 = yrange2 / 2;
     points = d3.range(graph.xmin, graph.xmax).map(function(i) { 
-      return { x: i, y: graph.ymin + yrange2 + Math.random() * yrange2 / 2 }; 
+      return { x: i, y: graph.ymin + yrange4 + Math.random() * yrange2 }; 
     });
-    
-    line = d3.svg.line()
-        .x(function(d, i) { return x(points[i].x); })
-        .y(function(d, i) { return y(points[i].y); }),
     
     // x-scale
     x = d3.scale.linear()
-        .domain([graph.min, graph.xmax])
-        .nice()
-        .range([0, size.width])
-        .nice(),
+        .domain([graph.xmin, graph.xmax])
+        .range([0, size.width]),
+
     // drag x-axis logic
     downscalex = x.copy(),
     downx = Math.NaN,
@@ -99,9 +95,17 @@ var chart = document.getElementById("chart"),
         .nice()
         .range([0, size.height])
         .nice(),
+    line = d3.svg.line()
+        .x(function(d, i) { return x(points[i].x); })
+        .y(function(d, i) { return y(points[i].y); }),
+
     // drag y-axis logic
     downscaley = y.copy(),
     downy = Math.NaN,
+
+    line = d3.svg.line()
+        .x(function(d, i) { return x(points[i].x); })
+        .y(function(d, i) { return y(points[i].y); }),
 
     dragged = selected = null;
 
@@ -111,12 +115,11 @@ var vis = d3.select(chart).append("svg")
     .append("g")
       .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
-var graph = vis.append("rect")
+var plot = vis.append("rect")
     .attr("width", size.width)
     .attr("height", size.height)
     .style("fill", "#EEEEEE")
     .attr("pointer-events", "all")
-    // .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", redraw))
     .on("mousedown", function() {
       if (d3.event.altKey) {
           points.push(selected = dragged = d3.svg.mouse(vis.node()));
@@ -125,6 +128,13 @@ var graph = vis.append("rect")
           d3.event.stopPropagation();
       }
     });
+
+// special-case change in d3.behavior.zoom coming in v2.8.0
+if (d3.behavior.zoom().x) {
+  plot.call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", redraw));
+} else {
+  plot.call(d3.behavior.zoom().on("zoom", redraw));
+}
 
 vis.append("svg")
     .attr("top", 0)
@@ -136,6 +146,34 @@ vis.append("svg")
     .append("path")
         .attr("class", "line")
         .attr("d", line(points))
+
+// add Chart Title
+if (graph.title) {
+  vis.append("text")
+      .text(graph.title)
+      .attr("x", size.width/2)
+      .attr("dy","-1em")
+      .style("text-anchor","middle");
+}
+
+// Add the x-axis label
+if (graph.xlabel) {
+  vis.append("text")
+      .text(graph.xlabel)
+      .attr("x", size.width/2)
+      .attr("y", size.height)
+      .attr("dy","2.4em")
+      .style("text-anchor","middle");
+}
+
+// add y-axis label
+if (graph.ylabel) {
+  vis.append("g")
+      .append("text")
+          .text( graph.ylabel)
+          .style("text-anchor","middle")
+          .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
+}
 
 d3.select(window)
     .on("mousemove", mousemove)
@@ -175,15 +213,11 @@ function update() {
       .attr("class", function(d) { return d === selected ? "selected" : null; })
       .attr("cx",    function(d) { return x(d.x); })
       .attr("cy",    function(d) { return y(d.y); })
-      .attr("r", 4.0)
+      .attr("r", 6.0)
       .on("mousedown", function(d) {
         selected = dragged = d;
         update();
-      })
-    .transition()
-      .duration(300)
-      .ease("elastic")
-      .attr("r", 8.0);
+      });
 
   circle
       .attr("class", function(d) { return d === selected ? "selected" : null; })
@@ -198,11 +232,9 @@ function update() {
   }
 }
 
-
 function mousemove() {
   if (!dragged) return;
   var m = d3.svg.mouse(vis.node());
-  dragged.x = x.invert(Math.max(0, Math.min(size.width, m[0])));
   dragged.y = y.invert(Math.max(0, Math.min(size.height, m[1])));
   update();
 }
