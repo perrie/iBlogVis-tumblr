@@ -85,9 +85,9 @@ var chart = document.getElementById("chart"),
     
     // x-scale
     x = d3.scale.linear()
-        .domain([graph.xmax, graph.xmin])
+        .domain([graph.min, graph.xmax])
         .nice()
-        .range([0, size.height])
+        .range([0, size.width])
         .nice(),
     // drag x-axis logic
     downscalex = x.copy(),
