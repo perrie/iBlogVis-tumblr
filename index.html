@@ -15,8 +15,14 @@ rect {
 
 #chart {
     background-color: #F7F2C5;
-    width: 960px;
-    height: 460px;
+    width: 450px;
+    height: 450px;
+}
+
+#chart2 {
+    background-color: #F7F2C5;
+    width: 450px;
+    height: 450px;
 }
 
 circle, .line {
@@ -185,7 +191,7 @@ if (graph.ylabel) {
           .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
 }
 
-d3.select(window)
+d3.select(chart)
     .on("mousemove", mousemove)
     .on("mouseup", mouseup)
     .on("keydown", keydown);
@@ -273,10 +279,6 @@ function keydown() {
 redraw();
 
 function redraw() {
-  if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-      d3.event.transform(x, y);
-  };
-
   var fx = x.tickFormat(10),
       fy = y.tickFormat(10);
 
