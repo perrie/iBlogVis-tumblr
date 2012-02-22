@@ -303,6 +303,7 @@ function redraw() {
       .attr("dy", "1em")
       .attr("text-anchor", "middle")
       .text(fx)
+      .style("cursor", "move")
       .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
       .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
       .on("mousedown", function(d) {
@@ -338,6 +339,7 @@ function redraw() {
       .attr("dy", ".35em")
       .attr("text-anchor", "end")
       .text(fy)
+      .style("cursor", "move")
       .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
       .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
       .on("mousedown", function(d) {
