@@ -185,7 +185,7 @@ if (graph.ylabel) {
           .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
 }
 
-d3.select(chart)
+d3.select(window)
     .on("mousemove", mousemove)
     .on("mouseup", mouseup)
     .on("keydown", keydown);
@@ -273,6 +273,11 @@ function keydown() {
 redraw();
 
 function redraw() {
+  // needed for pre v2.8.0
+  if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
+      d3.event.transform(x, y);
+  };
+
   var fx = x.tickFormat(10),
       fy = y.tickFormat(10);
 
