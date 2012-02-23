@@ -4,6 +4,12 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <title>One Graph</title>
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>One Graph</title>
+    <script type="text/javascript" src="../../vendor/d3/d3.v2.js"></script>
     <style type="text/css">
 body {
   font: 13px sans-serif;
@@ -242,7 +248,6 @@ function update() {
 
 function datapoint_drag(d) {
   document.onselectstart = function() { return false; };
-  if (d.preventDefault) { d.preventDefault(); };
   selected = dragged = d;
   update();
 };
