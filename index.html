@@ -4,12 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <title>One Graph</title>
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <title>One Graph</title>
-    <script type="text/javascript" src="../../vendor/d3/d3.v2.js"></script>
     <style type="text/css">
 body {
   font: 13px sans-serif;
@@ -35,16 +29,14 @@ ul {
     height: 500px;
 }
 
-circle, .line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
+.axis {
+  font-size: 1.5em; 
 }
 
 circle, .line {
   fill: none;
   stroke: steelblue;
-  stroke-width: 1.5px; }
+  stroke-width: 2px; }
 
 circle {
   fill: white;
@@ -76,9 +68,9 @@ var chart1 = document.getElementById("chart1"),
     cx = chart1.clientWidth,
     cy = chart1.clientHeight,
     padding = {
-       "top":    graph.title  ? 30 : 20,
+       "top":    graph.title  ? 40 : 20,
        "right":                 30,
-       "bottom": graph.xlabel ? 40 : 10,
+       "bottom": graph.xlabel ? 60 : 10,
        "left":   graph.ylabel ? 70 : 45
     },
     size = {
@@ -158,15 +150,17 @@ vis.append("svg")
 // add Chart Title
 if (graph.title) {
   vis.append("text")
+      .attr("class", "axis")
       .text(graph.title)
       .attr("x", size.width/2)
-      .attr("dy","-1em")
+      .attr("dy","-0.8em")
       .style("text-anchor","middle");
 }
 
 // Add the x-axis label
 if (graph.xlabel) {
   vis.append("text")
+      .attr("class", "axis")
       .text(graph.xlabel)
       .attr("x", size.width/2)
       .attr("y", size.height)
@@ -177,9 +171,10 @@ if (graph.xlabel) {
 // add y-axis label
 if (graph.ylabel) {
   vis.append("g").append("text")
+      .attr("class", "axis")
       .text( graph.ylabel)
       .style("text-anchor","middle")
-      .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
+      .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
 }
 
 d3.select(window)
@@ -309,6 +304,7 @@ function redraw() {
       .attr("y2", size.height);
 
   gxe.append("text")
+      .attr("class", "axis")
       .attr("y", size.height)
       .attr("dy", "1em")
       .attr("text-anchor", "middle")
@@ -340,6 +336,7 @@ function redraw() {
       .attr("x2", size.width);
 
   gye.append("text")
+      .attr("class", "axis")
       .attr("x", -3)
       .attr("dy", ".35em")
       .attr("text-anchor", "end")
