@@ -23,14 +23,14 @@ ul {
     margin: 0em;
     padding: 0em 1em; }
 
-#chart1 {
+.axis {
+  font-size: 1.5em; 
+}
+
+.chart {
     background-color: #F7F2C5;
     width: 960px;
     height: 500px;
-}
-
-.axis {
-  font-size: 1.5em; 
 }
 
 circle, .line {
@@ -46,13 +46,23 @@ circle {
     fill: #ff7f0e;
     stroke: #ff7f0e; }
   circle:hover {
+    fill: #ff7f0e;
+    stroke: #707f0e; }
+  circle.selected:hover {
+    fill: #ff7f0e;
     stroke: #ff7f0e; }
 
     </style>
   </head>
   <body>
-    <div id="chart1"></div>
+    <div id="chart1" class="chart"></div>
     <script type="text/javascript">
+
+function keyboardHandler() {
+  var callback = keyboardHandler.callback;
+  if (callback) { callback(); }
+}
+keyboardHandler.callback = null;
 
 SimpleGraph = function(elemid, options) {
   var self = this;
@@ -64,46 +74,52 @@ SimpleGraph = function(elemid, options) {
   this.options.xmin = options.xmin || 0;
   this.options.ymax = options.ymax || 10;
   this.options.ymin = options.ymin || 0;
+
   this.padding = {
      "top":    this.options.title  ? 40 : 20,
      "right":                 30,
      "bottom": this.options.xlabel ? 60 : 10,
      "left":   this.options.ylabel ? 70 : 45
   };
+
   this.size = {
     "width":  this.cx - this.padding.left - this.padding.right,
     "height": this.cy - this.padding.top  - this.padding.bottom
-  },
-  
-  this.yrange2 = (this.options.ymax - this.options.ymin) / 2,
-  this.yrange4 = this.yrange2 / 2;
-  this.points = d3.range(this.options.xmin, this.options.xmax/2).map(function(i) { 
-    return { x: i*2, y: this.options.ymin + this.yrange4 + Math.random() * this.yrange2 }; 
-  }, self);
-  
+  };
+
   // x-scale
   this.x = d3.scale.linear()
       .domain([this.options.xmin, this.options.xmax])
-      .range([0, this.size.width]),
+      .range([0, this.size.width]);
 
   // drag x-axis logic
-  this.downx = Math.NaN,
+  this.downx = Math.NaN;
 
   // y-scale (inverted domain)
   this.y = d3.scale.linear()
       .domain([this.options.ymax, this.options.ymin])
       .nice()
       .range([0, this.size.height])
-      .nice(),
-  this.line = d3.svg.line()
-      .x(function(d, i) { return this.x(this.points[i].x); })
-      .y(function(d, i) { return this.y(this.points[i].y); }),
+      .nice();
 
   // drag y-axis logic
-  this.downy = Math.NaN,
+  this.downy = Math.NaN;
 
   this.dragged = this.selected = null;
-  
+
+  this.line = d3.svg.line()
+      .x(function(d, i) { return this.x(this.points[i].x); })
+      .y(function(d, i) { return this.y(this.points[i].y); });
+
+  var xrange =  (this.options.xmax - this.options.xmin),
+      yrange2 = (this.options.ymax - this.options.ymin) / 2,
+      yrange4 = yrange2 / 2,
+      datacount = this.size.width/30;
+
+  this.points = d3.range(datacount).map(function(i) { 
+    return { x: i * xrange / datacount, y: this.options.ymin + yrange4 + Math.random() * yrange2 }; 
+  }, self);
+
   this.vis = d3.select(this.chart).append("svg")
       .attr("width",  this.cx)
       .attr("height", this.cy)
@@ -117,7 +133,7 @@ SimpleGraph = function(elemid, options) {
       .attr("pointer-events", "all")
       .on("mousedown.drag", self.plot_drag())
       .on("touchstart.drag", self.plot_drag())
-      this.plot.call(d3.behavior.zoom().x(this.x).y(this.y).scaleExtent([1, 8]).on("zoom", this.redraw()));
+      this.plot.call(d3.behavior.zoom().x(this.x).y(this.y).on("zoom", this.redraw()));
 
   this.vis.append("svg")
       .attr("top", 0)
@@ -159,22 +175,16 @@ SimpleGraph = function(elemid, options) {
         .style("text-anchor","middle")
         .attr("transform","translate(" + -40 + " " + this.size.height/2+") rotate(-90)");
   }
-  
-  d3.select(window)
-      .on("mousemove.drag", this.mousemove())
-      .on("touchmove.drag", this.mousemove())
-      .on("mouseup.drag",   this.mouseup())
-      .on("touchend.drag",  this.mouseup())
-      .on("keydown",        this.keydown);
 
-  // attach the mousemove and mouseup to the body
-  // in case one wonders off the axis line
   d3.select(this.chart)
-    .on("mousemove.drag", this.axis_scale())
-    .on("touchmove.drag", this.axis_scale())
-    .on("mouseup",        this.axis_scale_end())
-    .on("touchend.drag",  this.axis_scale_end());
-    
+      .on("mousemove.drag", self.mousemove())
+      .on("touchmove.drag", self.mousemove())
+      .on("mouseup.drag",   self.mouseup())
+      .on("touchend.drag",  self.mouseup());
+
+  d3.select(window)
+      .on("keydown",        self.keydown());
+
   this.redraw()();
 };
   
@@ -185,12 +195,13 @@ SimpleGraph = function(elemid, options) {
 SimpleGraph.prototype.plot_drag = function() {
   var self = this;
   return function() {
+    keyboardHandler.callback = self.keydown();
     d3.select('body').style("cursor", "move");
     if (d3.event.altKey) {
-      var m = d3.svg.mouse(self.vis.node());
+      var p = d3.svg.mouse(self.vis.node());
       var newpoint = {};
-      newpoint.x = x.invert(Math.max(0, Math.min(self.size.width, m[0])));
-      newpoint.y = y.invert(Math.max(0, Math.min(self.size.height, m[1])));
+      newpoint.x = self.x.invert(Math.max(0, Math.min(self.size.width,  p[0])));
+      newpoint.y = self.y.invert(Math.max(0, Math.min(self.size.height, p[1])));
       self.points.push(newpoint);
       self.points.sort(function(a, b) {
         if (a.x < b.x) { return -1 };
@@ -238,44 +249,96 @@ SimpleGraph.prototype.update = function() {
 SimpleGraph.prototype.datapoint_drag = function() {
   var self = this;
   return function(d) {
+    keyboardHandler.callback = self.keydown();
     document.onselectstart = function() { return false; };
     self.selected = self.dragged = d;
     self.update();
+    
   }
 };
 
 SimpleGraph.prototype.mousemove = function() {
   var self = this;
   return function() {
-    if (!self.dragged) return;
-    var m = d3.svg.mouse(self.vis.node());
-    self.dragged.y = self.y.invert(Math.max(0, Math.min(self.size.height, m[1])));
-    self.update();
+    var p = d3.svg.mouse(self.vis[0][0]),
+        t = d3.event.changedTouches;
+    
+    if (self.dragged) {
+      self.dragged.y = self.y.invert(Math.max(0, Math.min(self.size.height, p[1])));
+      self.update();
+    };
+    if (!isNaN(self.downx)) {
+      d3.select('body').style("cursor", "ew-resize");
+      var rupx = self.x.invert(p[0]),
+          xaxis1 = self.x.domain()[0],
+          xaxis2 = self.x.domain()[1],
+          xextent = xaxis2 - xaxis1;
+      if (rupx != 0) {
+        var changex, new_domain;
+        changex = self.downx / rupx;
+        new_domain = [xaxis1, xaxis1 + (xextent * changex)];
+        self.x.domain(new_domain);
+        self.redraw()();
+      }
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    };
+    if (!isNaN(self.downy)) {
+      d3.select('body').style("cursor", "ns-resize");
+      var rupy = self.y.invert(p[1]),
+          yaxis1 = self.y.domain()[1],
+          yaxis2 = self.y.domain()[0],
+          yextent = yaxis2 - yaxis1;
+      if (rupy != 0) {
+        var changey, new_domain;
+        changey = self.downy / rupy;
+        new_domain = [yaxis1 + (yextent * changey), yaxis1];
+        self.y.domain(new_domain);
+        self.redraw()();
+      }
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    }
   }
-}
+};
 
 SimpleGraph.prototype.mouseup = function() {
   var self = this;
   return function() {
     document.onselectstart = function() { return true; };
     d3.select('body').style("cursor", "auto");
-    if (!self.dragged) return;
-    // self.mousemove();
-    self.dragged = null;
+    d3.select('body').style("cursor", "auto");
+    if (!isNaN(self.downx)) {
+      self.redraw()();
+      self.downx = Math.NaN;
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    };
+    if (!isNaN(self.downy)) {
+      self.redraw()();
+      self.downy = Math.NaN;
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    }
+    if (self.dragged) { 
+      self.dragged = null 
+    }
   }
 }
 
 SimpleGraph.prototype.keydown = function() {
   var self = this;
-  if (!this.selected) return;
-  switch (d3.event.keyCode) {
-    case 8: // backspace
-    case 46: { // delete
-      var i = this.points.indexOf(this.selected);
-      this.points.splice(i, 1);
-      this.selected = this.points.length ? this.points[i > 0 ? i - 1 : 0] : null;
-      this.update();
-      break;
+  return function() {
+    if (!self.selected) return;
+    switch (d3.event.keyCode) {
+      case 8: // backspace
+      case 46: { // delete
+        var i = self.points.indexOf(self.selected);
+        self.points.splice(i, 1);
+        self.selected = self.points.length ? self.points[i > 0 ? i - 1 : 0] : null;
+        self.update();
+        break;
+      }
     }
   }
 };
@@ -294,11 +357,6 @@ SimpleGraph.prototype.redraw = function() {
     },
     fx = self.x.tickFormat(10),
     fy = self.y.tickFormat(10);
-    
-    // needed for pre v2.8.0
-    if (d3.event && d3.event.transform && isNaN(self.downx) && isNaN(self.downy)) {
-        d3.event.transform(self.x, self.y);
-    };
 
     // Regenerate x-ticks…
     var gx = self.vis.selectAll("g.x")
@@ -363,7 +421,7 @@ SimpleGraph.prototype.redraw = function() {
         .on("touchstart.drag", self.yaxis_drag());
 
     gy.exit().remove();
-    self.plot.call(d3.behavior.zoom().x(self.x).y(self.y).scaleExtent([1, 8]).on("zoom", self.redraw()));
+    self.plot.call(d3.behavior.zoom().x(self.x).y(self.y).on("zoom", self.redraw()));
     self.update();    
   }  
 }
@@ -386,66 +444,6 @@ SimpleGraph.prototype.yaxis_drag = function(d) {
   }
 }
 
-SimpleGraph.prototype.axis_scale = function() {
-  var self = this;
-  return function(d) {
-    var p = d3.svg.mouse(self.vis[0][0]),
-        t = d3.event.changedTouches;
-  
-    if (!isNaN(self.downx)) {
-      d3.select('body').style("cursor", "ew-resize");
-      var rupx = self.x.invert(p[0]),
-          xaxis1 = self.x.domain()[0],
-          xaxis2 = self.x.domain()[1],
-          xextent = xaxis2 - xaxis1;
-      if (rupx != 0) {
-        var changex, new_domain;
-        changex = self.downx / rupx;
-        new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-        self.x.domain(new_domain);
-        self.redraw()();
-      }
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    };
-    if (!isNaN(self.downy)) {
-      d3.select('body').style("cursor", "ns-resize");
-      var rupy = self.y.invert(p[1]),
-          yaxis1 = self.y.domain()[1],
-          yaxis2 = self.y.domain()[0],
-          yextent = yaxis2 - yaxis1;
-      if (rupy != 0) {
-        var changey, new_domain;
-        changey = self.downy / rupy;
-        new_domain = [yaxis1 + (yextent * changey), yaxis1];
-        self.y.domain(new_domain);
-        self.redraw()();
-      }
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    }
-  }
-};
-
-SimpleGraph.prototype.axis_scale_end = function() {
-  var self = this;
-  return function(d) {
-    document.onselectstart = function() { return true; };
-    d3.select('body').style("cursor", "auto");
-    if (!isNaN(self.downx)) {
-      self.redraw()();
-      self.downx = Math.NaN;
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    };
-    if (!isNaN(self.downy)) {
-      self.redraw()();
-      self.downy = Math.NaN;
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    }
-  }
-};
 
 graph = new SimpleGraph("chart1", {
     "xmax": 60, "xmin": 0,
