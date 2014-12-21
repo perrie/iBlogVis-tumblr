@@ -1,0 +1,98 @@
+      body { font: 9px verdana,sans-serif; }
+      rect { fill: #fff; }
+      ul {
+        list-style-type: none;
+        margin: 0.5em 0em 0.5em 0em;
+        width: 100%; }
+        ul li {
+          display: table-cell;
+          vertical-align: middle;
+          margin: 0em;
+          padding: 0em 1em; }
+      .axis {
+        font-size: 1em;
+        fill: white; }
+      .chart {
+        background-color: darkCyan;
+        width: 750px;
+        height: 97%;
+        position:fixed;
+        top:5px;
+        left:5px;
+        border:1px solid gray;
+       }
+        .p_text { fill:red; }
+        .p_photo { fill: pink; }
+        .p_quote { fill: yellow; }
+        .p_link { fill: lightGreen; }
+        .p_chat { fill: darkGreen; }
+        .p_audio { fill: lightBlue; }
+        .p_video { fill: darkBlue; }
+        .p_answer { fill: violet; }
+.p_text, .p_photo, .p_quote, .p_link, .p_chat, .p_audio, .p_video, .p_answer  {
+         fill-opacity: 0.3;
+        }
+        #legend {
+         background-color:black;
+         height:120px;
+        }
+        .toggle_options{
+         width:100px;
+         background-color:darkCyan;
+         padding:5px;
+         text-align:center;
+         color:white;
+         cursor:pointer;
+         margin:2px;
+        }
+        #sidebar {
+         width:200px;
+         position:absolute;
+         top:5px;
+         left:770px;
+         padding:5px;
+	 background-color:white;
+        }
+        .panel_name {
+         width:136px;
+         overflow:auto;
+        }
+        .panel_num {
+         width:30px;
+         overflow:auto;
+        }
+        .headers th {
+         padding:0px 5px 0px;
+         cursor:pointer;
+         color:darkCyan;
+	 background-color:lightCyan;
+        }
+	.headers th:hover {
+	 background-color:cyan;
+	}
+        #tag_select, #cmt_select {
+         cursor:text;
+         color:black;
+        }
+        .panel_container {
+         height:202px;
+         overflow:auto;
+         border:solid gray 1px;
+        }
+        #side {
+         float:left;
+         width:70px;
+        }
+        #switcher {
+         margin-left:85px;
+         margin-top:14px;
+        }
+        h3 {
+         text-align:center;
+         margin-bottom:4px;
+	 margin-top:2px;
+        }
+        .divide {
+         clear:both;
+        }
+

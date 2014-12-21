@@ -2,56 +2,91 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <title>One Graph</title>
-    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
+    <title>iBlogVis+tumblr</title>
+    <script type="text/javascript" src="js/d3.v3.js"></script>
     <script type="text/javascript" src="simple-graph.js"></script>
-    <style type="text/css">
-      body { font: 13px sans-serif; }
-      rect { fill: #fff; }
-      ul {
-        list-style-type: none;
-        margin: 0.5em 0em 0.5em 0em;
-        width: 100%; }
-        ul li {
-          display: table-cell;
-          vertical-align: middle;
-          margin: 0em;
-          padding: 0em 1em; }
-      .axis { font-size: 1.5em; }
-      .chart {
-        background-color: #F7F2C5;
-        width: 960px;
-        height: 500px; }
-      circle, .line {
-        fill: none;
-        stroke: steelblue;
-        stroke-width: 2px; }
-      circle {
-        fill: white;
-        fill-opacity: 0.2;
-        cursor: move; }
-        circle.selected {
-          fill: #ff7f0e;
-          stroke: #ff7f0e; }
-        circle:hover {
-          fill: #ff7f0e;
-          stroke: #707f0e; }
-        circle.selected:hover {
-          fill: #ff7f0e;
-          stroke: #ff7f0e; }
-    </style>
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
   </head>
   <body>
     <div id="chart1" class="chart"></div>
+   <div id="sidebar">
+    <h2>iBlogVis+tumblr</h2>
+     <div id="side">
+     <h3>Coding</h3>
+     <div id="legend"></div>
+     <script type="text/javascript">
+	//Please colour coding
+        var blog_types = ["text","photo","quote","link","chat", "audio","video","answer"];
+        var leg = d3.select("#legend")
+                .append("svg")
+                .attr("width",100)
+                .attr("height",150);
+        var circl = leg.selectAll("circle")
+                .data(blog_types)
+                .enter()
+                .append("circle");
+        circl.attr("cx",10)
+                .attr("cy",function(d,i) { return i*12 + 10; })
+                .attr("r", 6)
+                .style("stroke","orange")
+                .style("stroke-width",2)
+                .attr("class", function (d) { return "p_" + d; });
+        var txt = leg.selectAll("text")
+                .data(blog_types)
+                .enter()
+                .append("text");
+        txt.attr("x", 20)
+                .attr("y", function(d,i) { return i*12 + 13; })
+                .style("fill","white")
+                .text(function(d,i) { return d; });
+
+      </script>
+     </div> <!-- #side -->
+    <div id="switcher">
+     <h3>Quick Options</h3>
+    </div>
+    <br class="divide" />
+    <h3>Tag Options</h3>
+    <table class="headers">
+     <tr>
+      <th id="tag_name" class="panel_num" title="Sort by name">Name</th>
+      <th id="tag_select" class="panel_num" title="Place selected tags at top">Select</th>
+      <th id="tag_counts" class="panel_num" title="Sort by counts">Counts</th>
+      <th id="tag_without" class="panel_num" title="Toggle how tags are used">Without</th>
+     </tr>
+    </table>
+    <div class="panel_container">
+     <table id="panel1">
+     </table>
+    </div>
+    <br />
+    <h3>Commenter Options</h3>
+    <table class="headers">
+     <tr>
+      <th id="cmt_name" class="panel_num" title="Sort by name">Name</th>
+      <th id="cmt_select" class="panel_num" title="Place selected commenters at top">Select</th>
+      <th id="cmt_counts" class="panel_num" title="Sort by counts">Counts</th>
+      <th id="cmt_without" class="panel_num" title="Toggle how commenter name are used">Without</th>
+     </tr>
+    </table>
+    <div class="panel_container">
+     <table id="panel2">
+     </table>
+    </div>
+    <p>Not the information you're looking for? Try refreshing your broswer or 
+	return to <a href="setup.php">the Setup page</a>.</p>
     <script type="text/javascript">
-      graph = new SimpleGraph("chart1", {
-          "xmax": 60, "xmin": 0,
-          "ymax": 40, "ymin": 0, 
-          "title": "Simple Graph1",
-          "xlabel": "X Axis",
-          "ylabel": "Y Axis"  
+      d3.json("current.json", function(error, json) {
+         if (error) 
+ 	  return console.warn(error);
+        data = json;
+        graph = new SimpleGraph("chart1", {
+          "xmax": 600, "xmin": 0,
+          "ymax": 7000, "ymin": -2100, 
+	  "data": data
         });
+      });
     </script>
+ </div>
   </body>
 </html>
-

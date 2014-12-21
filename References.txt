@@ -1,0 +1,105 @@
+https://web.cs.dal.ca/~sbrooks/csci4166-6406/lectures/files/Introduction%20to%20D3.pdf
+
+
+w3schools
+http://www.w3schools.com/css/css_howto.asp
+http://www.w3schools.com/js/js_switch.asp
+http://www.w3schools.com/jsref/jsref_obj_date.asp
+http://www.w3schools.com/jsref/met_win_open.asp
+http://www.w3schools.com/jsref/jsref_splice.asp
+
+Transitional template
+http://www.webstandards.org/learn/reference/templates/html401t/
+
+tumblr data and use
+http://api.tumblr.com/v2/blog/peacecorps.tumblr.com/posts?api_key=fuiKNFp9vQFvjLNvx4sUwti4Yb5yGutBN4Xh10LXZhhRKjWlV4&notes_info=true&limit=50
+http://api.tumblr.com/v2/blog/isaia.tumblr.com/posts/text?api_key=mdCUFZwEabT9nRUyRgTenZKdGXslZqBOHNsj6OdQZd8r22ymLE&notes_info=true
+http://www.tumblr.com/docs/en/api/v2#tagged-method
+http://www.tumblr.com/docs/en/api/v2#posts
+
+Scaling code
+https://gist.github.com/stepheneb/1182434
+
+Time scale
+https://github.com/mbostock/d3/wiki/Time-Scales
+http://stackoverflow.com/questions/3505693/difference-between-datedatestring-and-new-datedatestring
+http://stackoverflow.com/questions/11286872/how-do-i-make-a-custom-axis-formatter-for-hours-minutes-in-d3-js
+http://stackoverflow.com/questions/14058876/how-do-i-display-dates-on-the-x-axis-for-nvd3-d3-js
+
+json
+http://stackoverflow.com/questions/10076940/d3-reading-json-data-instead-of-csv-file
+https://github.com/mbostock/d3/wiki/Requests
+
+using d3 symbols
+http://www.ivanteoh.com/posts/176-d3-tutorial-scale-graph.html
+https://github.com/mbostock/d3/wiki/SVG-Shapes
+
+javascript function arguments
+http://stackoverflow.com/questions/3914557/passing-arguments-forward-to-another-javascript-function
+http://stackoverflow.com/questions/3471337/javascript-passing-multiple-arguments-as-a-single-variable
+
+using d3 selections
+https://github.com/mbostock/d3/wiki/Selections
+
+using d3 "on" function
+http://christopheviau.com/d3_tutorial/
+
+basic code by legend
+http://alignedleft.com/tutorials/d3/making-a-bar-chart/
+
+check if code exists
+http://stackoverflow.com/questions/4186906/check-if-object-exists-in-javascript
+
+
+using hashmaps
+http://stackoverflow.com/questions/6748781/looping-javascript-hashmap
+
+remove element from array
+http://stackoverflow.com/questions/5767325/remove-specific-element-from-a-javascript-array
+
+add to array
+http://www.w3schools.com/jsref/jsref_push.asp
+
+filter array
+https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/filter
+https://github.com/mbostock/d3/wiki/Arrays
+
+remove data from elements
+http://mbostock.github.com/d3/tutorial/circle.html
+
+number of digits
+http://www.gubatron.com/blog/2010/01/16/javascript-get-how-many-digits-are-there-in-a-decimal-number/
+
+math functions
+http://www.w3schools.com/jsref/jsref_abs.asp
+http://stackoverflow.com/questions/3019278/any-way-to-specify-the-base-of-math-log-in-javascript
+
+get max using d3
+http://stackoverflow.com/questions/11488194/how-to-use-d3-min-and-d3-max-within-a-d3-json-command
+http://stackoverflow.com/questions/9688302/why-is-domain-not-using-d3-maxdata-in-d3
+
+sorting array
+http://stackoverflow.com/questions/3824392/javascript-natural-sort-array-object-and-maintain-index-association
+
+PHP get data
+http://stackoverflow.com/questions/819182/how-do-i-get-the-html-code-of-a-web-page-in-php
+
+test value is non-negateive integer
+http://stackoverflow.com/questions/1019515/javascript-test-for-an-integer
+
+get live value using javascript
+http://stackoverflow.com/questions/4213547/how-to-access-an-html-textbox-from-javascript
+
+PHP array functions
+http://www.php.net/manual/en/function.array-push.php
+http://php.net/manual/en/function.end.php
+http://php.net/manual/en/language.types.array.php
+
+PHP json
+http://www.php.net/manual/en/function.json-decode.php
+
+PHP GET + forms
+http://www.w3schools.com/php/php_get.asp
+
+
+
